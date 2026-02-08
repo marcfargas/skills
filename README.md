@@ -1,117 +1,78 @@
 # Skills
 
-Reusable skills for AI coding agents. Works with [pi](https://github.com/mariozechner/pi-coding-agent), [Claude Code](https://docs.anthropic.com/en/docs/claude-code), and any agent that supports the [Agent Skills standard](https://agentskills.io/specification).
+Reusable skills for AI coding agents. Works with [pi](https://github.com/mariozechner/pi-coding-agent), [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Cursor](https://cursor.sh), and any agent that supports the [Agent Skills standard](https://agentskills.io/specification).
 
 ## Available Skills
 
 | Category | Skill | Description |
 |----------|-------|-------------|
-| ☁️ Google Cloud | [gcloud](google-cloud/gcloud/) | GCP CLI with agent safety model (READ/WRITE/DESTRUCTIVE/EXPENSIVE/SECURITY/FORBIDDEN) |
+| ☁️ Google Cloud | [gcloud](google-cloud/gcloud/) | GCP CLI with agent safety model — hub + 7 reference files |
 | 🎬 Terminal | [vhs](terminal/vhs/) | Record terminal sessions as GIF/MP4 with [VHS](https://github.com/charmbracelet/vhs) |
-
-## What's a Skill?
-
-A skill is a directory with a `SKILL.md` file containing instructions an AI agent loads on demand. Think of it as a specialized manual: the agent reads the description to decide if it's relevant, then loads the full instructions only when needed.
-
-```
-google-cloud/gcloud/
-├── SKILL.md          ← Hub: safety model, triggers, quick reference
-├── auth.md           ← Loaded only when dealing with authentication
-├── serverless.md     ← Loaded only when deploying Cloud Run, Functions, etc.
-└── ...
-```
-
-**Progressive disclosure** — the agent pays context-window cost only for what it actually needs.
 
 ## Install
 
+### One command (39+ agents)
+
+```bash
+npx skills add marcfargas/skills
+```
+
+Installs to Claude Code, Cursor, Copilot, Amp, Cline, Windsurf, Gemini CLI, and [30+ more agents](https://skills.sh) automatically.
+
 ### pi
 
-Add this repo to your `~/.pi/agent/settings.json`:
+Add to `~/.pi/agent/settings.json`:
 
 ```json
 {
-  "skills": [
-    "path/to/skills"
-  ]
+  "skills": ["path/to/skills"]
 }
 ```
 
-Or clone and point to the clone:
+### Manual (any agent)
+
+Copy the skill directory into your agent's skill folder:
 
 ```bash
-git clone https://github.com/user/skills.git ~/skills
-```
-
-```json
-{
-  "skills": ["~/skills"]
-}
-```
-
-Pi recursively discovers all `SKILL.md` files under the path.
-
-### Claude Code
-
-```bash
-# Copy individual skills to Claude's skill directory
 cp -r google-cloud/gcloud ~/.claude/skills/gcloud
-```
-
-### Other agents
-
-Any agent supporting the [Agent Skills standard](https://agentskills.io) can use these. Point your agent's skill discovery at this directory.
-
-## Using a Skill
-
-Skills load automatically when your task matches the skill description. You can also force-load:
-
-```
-/skill:gcloud
-/skill:vhs
 ```
 
 ## Skill Design Principles
 
-1. **Safety first** — destructive operations are classified and gated. Agents must confirm before deleting, must flag costs before creating expensive resources
-2. **Hub + spoke** — a thin `SKILL.md` hub (~100-150 lines) with per-topic reference files. Agents load the hub, then only the sub-file they need
-3. **Agent-native** — examples use `--format=json` for machine parsing, include error handling patterns, show idempotent operations
-4. **Portable** — no hardcoded paths or personal config. Works on any machine
-5. **Tested** — skills are tested with multiple models (Gemini, GPT, Claude) before publishing
+1. **Safety first** — destructive operations classified and gated, costs flagged
+2. **Hub + spoke** — thin SKILL.md hub (~140 lines) + per-topic reference files loaded on demand
+3. **Agent-native** — `--format=json` everywhere, idempotent patterns, error handling
+4. **Portable** — no hardcoded paths or personal config
+5. **Tested** — validated with Gemini, GPT, and Claude before publishing
 
 ## Structure
 
 ```
 skills/
-├── google-cloud/           # Google Cloud Platform
-│   └── gcloud/             # gcloud CLI
-├── terminal/               # Terminal tools
-│   └── vhs/                # Terminal recording
-├── (coming soon)
-│   ├── odoo/               # Odoo ERP (synced from odoo-toolbox)
-│   └── ...
+├── google-cloud/
+│   └── gcloud/          # 8 files, ~1100 lines total
+├── terminal/
+│   └── vhs/             # 1 file
 └── README.md
 ```
 
-## External Skills
+## External Skills (planned)
 
-Some skills are developed in their own repositories and synced here via GitHub Actions:
+Some skills are developed in their own repositories and synced here:
 
-| Skill | Source Repo | Sync |
-|-------|-------------|------|
-| *(planned)* odoo | `odoo-toolbox` | On release |
-| *(planned)* go-easy | `go-easy` | On release |
+| Skill | Source Repo | Status |
+|-------|-------------|--------|
+| odoo | `odoo-toolbox` | Planned |
+| go-easy | `go-easy` | Planned |
 
 ## Contributing
 
-Skills follow the [Agent Skills specification](https://agentskills.io/specification).
+Skills follow the [Agent Skills specification](https://agentskills.io/specification). Requirements:
 
-Requirements:
-- `SKILL.md` with valid YAML frontmatter (`name`, `description`)
-- `name` matches parent directory (lowercase, hyphens, no spaces)
-- `description` is specific enough for an agent to decide when to load it
-- No hardcoded paths, credentials, or personal config
-- Destructive operations must be clearly marked
+- `SKILL.md` with YAML frontmatter (`name`, `description`)
+- `name` matches parent directory
+- No hardcoded paths or credentials
+- Destructive operations clearly marked
 
 ## License
 
