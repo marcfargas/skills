@@ -44,30 +44,24 @@ cp -r google-cloud/gcloud ~/.claude/skills/gcloud
 
 ## How We Build Skills
 
-Every skill goes through a rigorous process before publishing:
+### Multi-Model Review
 
-### Multi-Model Review (4 axes)
+Every skill is reviewed by **3+ models** (Claude, Gemini, GPT) before publishing — structure, agent usability, safety, and real-world scenario testing. If an agent can misinterpret an instruction, we find out before you do.
 
-Each skill is reviewed by **3+ models** (Claude, Gemini, GPT) across 4 dimensions:
+### Safety Classification
 
-1. **Structure** — frontmatter, hub+spoke architecture, file organization
-2. **Agent usability** — can an agent follow the instructions without ambiguity?
-3. **Safety model** — every operation classified (READ / WRITE / DESTRUCTIVE / EXPENSIVE / FORBIDDEN) with appropriate gating
-4. **Real-world scenarios** — tested with actual agent tasks: deploy, delete, handle errors, refuse forbidden operations
+Every operation is classified: **READ** / **WRITE** / **DESTRUCTIVE** / **EXPENSIVE** / **FORBIDDEN**. Destructive and expensive operations are gated — the agent must confirm before executing, and costs are flagged upfront.
 
-### Design Principles
+### Progressive Discovery
 
-- **Safety first** — destructive operations classified and gated, costs flagged before execution
-- **Hub + spoke** — thin SKILL.md hub (~140 lines) + per-topic reference files loaded on demand, keeping context windows lean
+Skills use a **hub + spoke** architecture. The SKILL.md hub is ~140 lines — just enough to match the right skill and know what's available. Detailed per-topic reference files are loaded on demand, keeping your context window lean.
+
+### Also
+
 - **Agent-native** — `--format=json` everywhere, idempotent patterns, structured error handling
 - **Portable** — no hardcoded paths, no personal config, works on any machine
 - **Spec-compliant** — validated against the [Agent Skills specification](https://agentskills.io/specification) using [skills-ref](https://github.com/agentskills/agentskills) in CI
-
-### Continuous Validation
-
-- `agentskills validate` runs on **every push and PR** ([validate.yml](.github/workflows/validate.yml))
-- Automated [pre-release checklist](release/pre-release/) with AI-written changesets
-- Published via [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers) with provenance attestations
+- **Continuous validation** — `agentskills validate` on every push ([validate.yml](.github/workflows/validate.yml)), [pre-release checklist](release/pre-release/) with AI-written changesets, [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers) with provenance
 
 ## Structure
 
