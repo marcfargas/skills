@@ -7,6 +7,7 @@ Reusable skills for AI coding agents. Works with [pi](https://github.com/marioze
 | Category | Skill | Description |
 |----------|-------|-------------|
 | ☁️ Google Cloud | [gcloud](google-cloud/gcloud/) | GCP CLI with agent safety model — hub + 7 reference files |
+| 🚀 Release | [pre-release](release/pre-release/) | Pre-release checklist + AI-written changesets via @changesets/cli |
 | 🎬 Terminal | [vhs](terminal/vhs/) | Record terminal sessions as GIF/MP4 with [VHS](https://github.com/charmbracelet/vhs) |
 
 ## Install
@@ -21,11 +22,15 @@ Installs to Claude Code, Cursor, Copilot, Amp, Cline, Windsurf, Gemini CLI, and 
 
 ### pi
 
-Add to `~/.pi/agent/settings.json`:
+```bash
+pi install npm:@marcfargas/skills
+```
+
+Or add to `~/.pi/agent/settings.json`:
 
 ```json
 {
-  "skills": ["path/to/skills"]
+  "packages": ["npm:@marcfargas/skills"]
 }
 ```
 
@@ -51,6 +56,8 @@ cp -r google-cloud/gcloud ~/.claude/skills/gcloud
 skills/
 ├── google-cloud/
 │   └── gcloud/          # 8 files, ~1100 lines total
+├── release/
+│   └── pre-release/     # 1 file
 ├── terminal/
 │   └── vhs/             # 1 file
 └── README.md
@@ -70,9 +77,29 @@ Some skills are developed in their own repositories and synced here:
 Skills follow the [Agent Skills specification](https://agentskills.io/specification). Requirements:
 
 - `SKILL.md` with YAML frontmatter (`name`, `description`)
-- `name` matches parent directory
+- `name` matches parent directory (kebab-case, max 64 chars)
+- `description` present (max 1024 chars)
 - No hardcoded paths or credentials
 - Destructive operations clearly marked
+
+### Validation
+
+Use [skills-ref](https://github.com/agentskills/agentskills) (Python — the official reference implementation from the spec authors) to validate skills locally:
+
+```bash
+pip install skills-ref
+
+# Validate a skill directory
+agentskills validate path/to/skill
+
+# Read parsed properties as JSON
+agentskills read-properties path/to/skill
+
+# Generate <available_skills> XML prompt block
+agentskills to-prompt path/to/skill-a path/to/skill-b
+```
+
+CI runs `agentskills validate` on every push — see [`.github/workflows/validate.yml`](.github/workflows/validate.yml).
 
 ## License
 

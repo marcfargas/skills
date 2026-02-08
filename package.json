@@ -1,0 +1,42 @@
+{
+  "name": "@marcfargas/skills",
+  "version": "0.1.0",
+  "description": "Reusable AI agent skills for pi, Claude Code, Cursor, and any Agent Skills compatible agent",
+  "license": "MIT",
+  "author": "Marc Fargas <marc@marcfargas.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marcfargas/skills"
+  },
+  "keywords": [
+    "pi-package",
+    "agent-skills",
+    "ai-agent",
+    "skills",
+    "gcloud",
+    "vhs"
+  ],
+  "pi": {
+    "skills": [
+      "google-cloud",
+      "release",
+      "terminal"
+    ]
+  },
+  "scripts": {
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.5.2",
+    "@changesets/cli": "^2.29.8"
+  },
+  "files": [
+    "google-cloud/",
+    "release/",
+    "terminal/",
+    "README.md",
+    "LICENSE"
+  ]
+}
