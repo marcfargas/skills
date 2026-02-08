@@ -42,13 +42,32 @@ Copy the skill directory into your agent's skill folder:
 cp -r google-cloud/gcloud ~/.claude/skills/gcloud
 ```
 
-## Skill Design Principles
+## How We Build Skills
 
-1. **Safety first** — destructive operations classified and gated, costs flagged
-2. **Hub + spoke** — thin SKILL.md hub (~140 lines) + per-topic reference files loaded on demand
-3. **Agent-native** — `--format=json` everywhere, idempotent patterns, error handling
-4. **Portable** — no hardcoded paths or personal config
-5. **Tested** — validated with Gemini, GPT, and Claude before publishing
+Every skill goes through a rigorous process before publishing:
+
+### Multi-Model Review (4 axes)
+
+Each skill is reviewed by **3+ models** (Claude, Gemini, GPT) across 4 dimensions:
+
+1. **Structure** — frontmatter, hub+spoke architecture, file organization
+2. **Agent usability** — can an agent follow the instructions without ambiguity?
+3. **Safety model** — every operation classified (READ / WRITE / DESTRUCTIVE / EXPENSIVE / FORBIDDEN) with appropriate gating
+4. **Real-world scenarios** — tested with actual agent tasks: deploy, delete, handle errors, refuse forbidden operations
+
+### Design Principles
+
+- **Safety first** — destructive operations classified and gated, costs flagged before execution
+- **Hub + spoke** — thin SKILL.md hub (~140 lines) + per-topic reference files loaded on demand, keeping context windows lean
+- **Agent-native** — `--format=json` everywhere, idempotent patterns, structured error handling
+- **Portable** — no hardcoded paths, no personal config, works on any machine
+- **Spec-compliant** — validated against the [Agent Skills specification](https://agentskills.io/specification) using [skills-ref](https://github.com/agentskills/agentskills) in CI
+
+### Continuous Validation
+
+- `agentskills validate` runs on **every push and PR** ([validate.yml](.github/workflows/validate.yml))
+- Automated [pre-release checklist](release/pre-release/) with AI-written changesets
+- Published via [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers) with provenance attestations
 
 ## Structure
 
@@ -100,6 +119,12 @@ agentskills to-prompt path/to/skill-a path/to/skill-b
 ```
 
 CI runs `agentskills validate` on every push — see [`.github/workflows/validate.yml`](.github/workflows/validate.yml).
+
+## Sponsor
+
+Building high-quality, multi-model-reviewed agent skills takes serious token budget. If these skills save you time, consider sponsoring:
+
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/marcfargas?style=for-the-badge&logo=github&label=Sponsor)](https://github.com/sponsors/marcfargas)
 
 ## License
 
