@@ -1,0 +1,28 @@
+name: Validate Skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install skills-ref
+
+      - name: Validate all skills
+        run: |
+          set -e
+          for skill_md in $(find . -name SKILL.md -not -path './.changeset/*'); do
+            skill_dir=$(dirname "$skill_md")
+            echo "Validating $skill_dir..."
+            agentskills validate "$skill_dir"
+          done
+          echo "All skills valid ✅"

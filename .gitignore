@@ -1,3 +1,6 @@
+# Dependencies
+node_modules/
+
 # Demo artifacts (tapes are source, GIFs are generated)
 *.gif
 *.mp4
@@ -11,6 +14,10 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+
+# Environment
+.env
+.env.*
 
 # Pi project config (not part of the public skills)
 .pi/
