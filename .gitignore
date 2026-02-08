@@ -1,0 +1,16 @@
+# Demo artifacts (tapes are source, GIFs are generated)
+*.gif
+*.mp4
+*.webm
+demo-*.sh
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Pi project config (not part of the public skills)
+.pi/
