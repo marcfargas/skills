@@ -63,14 +63,14 @@ skills/
 └── README.md
 ```
 
-## External Skills (planned)
+## External Skills
 
-Some skills are developed in their own repositories and synced here:
+Some skills live in their own repositories — install them directly or via their npm packages:
 
-| Skill | Source Repo | Status |
-|-------|-------------|--------|
-| odoo | `odoo-toolbox` | Planned |
-| go-easy | `go-easy` | Planned |
+| Skill | Description | Install |
+|-------|-------------|---------|
+| [go-easy](https://github.com/marcfargas/go-easy) | Gmail, Drive, Calendar for AI agents — `npx go-gmail`, `npx go-drive`, `npx go-calendar` | `npx skills add marcfargas/go-easy` |
+| [odoo](https://github.com/marcfargas/odoo-toolbox) | Odoo ERP integration — connect, introspect, automate | Planned |
 
 ## Contributing
 
