@@ -1,6 +1,6 @@
 {
   "name": "@marcfargas/skills",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Reusable AI agent skills for pi, Claude Code, Cursor, and any Agent Skills compatible agent",
   "license": "MIT",
   "author": "Marc Fargas <marc@marcfargas.com>",

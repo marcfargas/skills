@@ -1,5 +1,17 @@
 # @marcfargas/skills
 
+## 0.2.1
+
+### Patch Changes
+
+- [#3](https://github.com/marcfargas/skills/pull/3) [`afecd57`](https://github.com/marcfargas/skills/commit/afecd57245f6e9c73a2f462325bb58902a45e3b8) Thanks [@marcfargas](https://github.com/marcfargas)! - Add web-search skill, fix npm provenance, update external skills references
+
+  - Add web-search skill (ddgs-based search + content extraction, no API keys)
+  - Include search/ in npm package and pi.skills config
+  - Enable npm provenance via trusted publishing in release workflow
+  - Add holdpty to external skills, fix odoo-toolbox install command
+  - Fix LICENSE copyright
+
 ## 0.2.0
 
 ### Minor Changes
