@@ -8,6 +8,7 @@ Reusable skills for AI coding agents. Works with [pi](https://github.com/marioze
 |----------|-------|-------------|
 | ☁️ Google Cloud | [gcloud](google-cloud/gcloud/) | GCP CLI with agent safety model — hub + 7 reference files |
 | 🚀 Release | [pre-release](release/pre-release/) | Pre-release checklist + AI-written changesets via @changesets/cli |
+| 🔍 Search | [web-search](search/web-search/) | Web search + content extraction via [ddgs](https://github.com/deedy5/ddgs) — no API keys |
 | 🎬 Terminal | [vhs](terminal/vhs/) | Record terminal sessions as GIF/MP4 with [VHS](https://github.com/charmbracelet/vhs) |
 
 ## Install
@@ -71,6 +72,8 @@ skills/
 │   └── gcloud/          # 8 files, ~1100 lines total
 ├── release/
 │   └── pre-release/     # 1 file
+├── search/
+│   └── web-search/      # SKILL.md + search.js + content.js
 ├── terminal/
 │   └── vhs/             # 1 file
 └── README.md
@@ -83,7 +86,8 @@ Some skills live in their own repositories — install them directly or via thei
 | Skill | Description | Install |
 |-------|-------------|---------|
 | [go-easy](https://github.com/marcfargas/go-easy) | Gmail, Drive, Calendar for AI agents — `npx go-gmail`, `npx go-drive`, `npx go-calendar` | `npx skills add marcfargas/go-easy` |
-| [odoo](https://github.com/marcfargas/odoo-toolbox) | Odoo ERP integration — connect, introspect, automate | Planned |
+| [holdpty](https://github.com/marcfargas/holdpty) | Detached PTY sessions — launch, attach, view, record terminal processes | `npx skills add marcfargas/holdpty` |
+| [odoo](https://github.com/marcfargas/odoo-toolbox) | Odoo ERP integration — connect, introspect, automate | `npx skills add marcfargas/odoo-toolbox` |
 
 ## Contributing
 
