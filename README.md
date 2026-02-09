@@ -86,7 +86,8 @@ Some skills live in their own repositories — install them directly or via thei
 | Skill | Description | Install |
 |-------|-------------|---------|
 | [go-easy](https://github.com/marcfargas/go-easy) | Gmail, Drive, Calendar for AI agents — `npx go-gmail`, `npx go-drive`, `npx go-calendar` | `npx skills add marcfargas/go-easy` |
-| [odoo](https://github.com/marcfargas/odoo-toolbox) | Odoo ERP integration — connect, introspect, automate | Planned |
+| [holdpty](https://github.com/marcfargas/holdpty) | Detached PTY sessions — launch, attach, view, record terminal processes | `npx skills add marcfargas/holdpty` |
+| [odoo](https://github.com/marcfargas/odoo-toolbox) | Odoo ERP integration — connect, introspect, automate | `npx skills add marcfargas/odoo-toolbox` |
 
 ## Contributing
 
