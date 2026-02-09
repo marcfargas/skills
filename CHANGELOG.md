@@ -1,5 +1,17 @@
 # @marcfargas/skills
 
+## 0.3.0
+
+### Minor Changes
+
+- [`6a5d50f`](https://github.com/marcfargas/skills/commit/6a5d50f69e467ab357104b188d6eb9a1c33c2250) Thanks [@marcfargas](https://github.com/marcfargas)! - Add pm2 skill for process lifecycle management — start, stop, restart, monitor long-running processes with auto-restart, ecosystem configs, log management, and Windows `.cmd` wrapper gotchas.
+
+### Patch Changes
+
+- [`4cd0638`](https://github.com/marcfargas/skills/commit/4cd063829f12e103b67000f8b0da62508f2244ea) Thanks [@marcfargas](https://github.com/marcfargas)! - Add CC0-1.0 license for skill content (dual-license: MIT code, CC0 skills). Add CI quality gates: tarball verification, `pi install` test, skills.sh compatibility check. Add skills.sh registration to release workflow.
+
+- [`4cd0638`](https://github.com/marcfargas/skills/commit/4cd063829f12e103b67000f8b0da62508f2244ea) Thanks [@marcfargas](https://github.com/marcfargas)! - Update VHS skill with holdpty integration pattern for recording TUI apps with colors, Windows `Set Shell "cmd"` gotcha, and monitoring snapshot use cases.
+
 ## 0.2.1
 
 ### Patch Changes
