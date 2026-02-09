@@ -90,7 +90,7 @@ jobs:
           # Verify it shows up
           OUTPUT=$(pi list 2>&1)
           echo "$OUTPUT"
-          if echo "$OUTPUT" | grep -q "skills"; then
+          if echo "$OUTPUT" | grep -q "package"; then
             echo "pi install verified ✅"
           else
             echo "❌ Package not found in pi list"
