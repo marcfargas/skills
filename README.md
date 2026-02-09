@@ -8,6 +8,7 @@ Reusable skills for AI coding agents. Works with [pi](https://github.com/marioze
 |----------|-------|-------------|
 | ☁️ Google Cloud | [gcloud](google-cloud/gcloud/) | GCP CLI with agent safety model — hub + 7 reference files |
 | 🚀 Release | [pre-release](release/pre-release/) | Pre-release checklist + AI-written changesets via @changesets/cli |
+| 🔍 Search | [web-search](search/web-search/) | Web search + content extraction via [ddgs](https://github.com/deedy5/ddgs) — no API keys |
 | 🎬 Terminal | [vhs](terminal/vhs/) | Record terminal sessions as GIF/MP4 with [VHS](https://github.com/charmbracelet/vhs) |
 
 ## Install
@@ -71,6 +72,8 @@ skills/
 │   └── gcloud/          # 8 files, ~1100 lines total
 ├── release/
 │   └── pre-release/     # 1 file
+├── search/
+│   └── web-search/      # SKILL.md + search.js + content.js
 ├── terminal/
 │   └── vhs/             # 1 file
 └── README.md

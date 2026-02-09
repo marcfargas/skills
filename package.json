@@ -14,12 +14,15 @@
     "ai-agent",
     "skills",
     "gcloud",
-    "vhs"
+    "pre-release",
+    "vhs",
+    "web-search"
   ],
   "pi": {
     "skills": [
       "google-cloud",
       "release",
+      "search",
       "terminal"
     ]
   },
@@ -35,6 +38,7 @@
   "files": [
     "google-cloud/",
     "release/",
+    "search/",
     "terminal/",
     "README.md",
     "LICENSE"
