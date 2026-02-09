@@ -7,6 +7,7 @@ Reusable skills for AI coding agents. Works with [pi](https://github.com/marioze
 | Category | Skill | Description |
 |----------|-------|-------------|
 | ☁️ Google Cloud | [gcloud](google-cloud/gcloud/) | GCP CLI with agent safety model — hub + 7 reference files |
+| ⚙️ Process | [pm2](process/pm2/) | Process management — keep services alive, auto-restart, monitoring, ecosystem configs |
 | 🚀 Release | [pre-release](release/pre-release/) | Pre-release checklist + AI-written changesets via @changesets/cli |
 | 🔍 Search | [web-search](search/web-search/) | Web search + content extraction via [ddgs](https://github.com/deedy5/ddgs) — no API keys |
 | 🎬 Terminal | [vhs](terminal/vhs/) | Record terminal sessions as GIF/MP4 with [VHS](https://github.com/charmbracelet/vhs) |
@@ -70,6 +71,8 @@ Skills use a **hub + spoke** architecture. The SKILL.md hub is ~140 lines — ju
 skills/
 ├── google-cloud/
 │   └── gcloud/          # 8 files, ~1100 lines total
+├── process/
+│   └── pm2/             # 1 file
 ├── release/
 │   └── pre-release/     # 1 file
 ├── search/

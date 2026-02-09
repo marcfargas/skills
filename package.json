@@ -14,6 +14,7 @@
     "ai-agent",
     "skills",
     "gcloud",
+    "pm2",
     "pre-release",
     "vhs",
     "web-search"
@@ -21,6 +22,7 @@
   "pi": {
     "skills": [
       "google-cloud",
+      "process",
       "release",
       "search",
       "terminal"
@@ -37,6 +39,7 @@
   },
   "files": [
     "google-cloud/",
+    "process/",
     "release/",
     "search/",
     "terminal/",
