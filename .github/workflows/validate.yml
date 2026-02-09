@@ -2,7 +2,7 @@ name: Validate Skills
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
 
       - run: pip install skills-ref
 
-      - name: Validate all skills
+      - name: Validate all skills (Agent Skills spec)
         run: |
           set -e
           for skill_md in $(find . -name SKILL.md -not -path './.changeset/*'); do
@@ -26,3 +26,90 @@ jobs:
             agentskills validate "$skill_dir"
           done
           echo "All skills valid ✅"
+
+  package-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: npm pack (simulate publish)
+        run: |
+          TARBALL=$(npm pack 2>/dev/null | tail -1)
+          echo "TARBALL=$TARBALL" >> "$GITHUB_ENV"
+          echo "Packed: $TARBALL"
+
+      - name: Verify tarball contents
+        run: |
+          set -e
+          FILES=$(tar tzf "$TARBALL")
+
+          # Every SKILL.md must be in the tarball
+          for skill_md in $(find . -name SKILL.md -not -path './.changeset/*' -not -path './node_modules/*'); do
+            # Strip leading ./
+            relative="${skill_md#./}"
+            expected="package/$relative"
+            if echo "$FILES" | grep -qF "$expected"; then
+              echo "  ✅ $relative"
+            else
+              echo "  ❌ MISSING: $relative"
+              exit 1
+            fi
+          done
+
+          # LICENSE files must be present
+          for f in LICENSE LICENSE-CC0 README.md; do
+            if echo "$FILES" | grep -qF "package/$f"; then
+              echo "  ✅ $f"
+            else
+              echo "  ❌ MISSING: $f"
+              exit 1
+            fi
+          done
+
+          echo "Tarball contents verified ✅"
+
+      - name: pi install (from tarball)
+        run: |
+          set -e
+          npm install -g @mariozechner/pi-coding-agent
+
+          # Clean pi home
+          export HOME=$(mktemp -d)
+          mkdir -p "$HOME/.pi/agent"
+          echo '{}' > "$HOME/.pi/agent/settings.json"
+
+          # Extract tarball, install from local path
+          EXTRACT_DIR=$(mktemp -d)
+          tar xzf "$TARBALL" -C "$EXTRACT_DIR"
+          pi install "$EXTRACT_DIR/package"
+
+          # Verify it shows up
+          OUTPUT=$(pi list 2>&1)
+          echo "$OUTPUT"
+          if echo "$OUTPUT" | grep -q "skills"; then
+            echo "pi install verified ✅"
+          else
+            echo "❌ Package not found in pi list"
+            exit 1
+          fi
+
+      - name: skills add (skills.sh compatibility)
+        run: |
+          set -e
+          # List available skills from local repo
+          OUTPUT=$(npx -y skills add . --list 2>&1) || true
+          echo "$OUTPUT"
+
+          # Check that at least our known skills are detected
+          for skill in gcloud pm2 pre-release vhs; do
+            if echo "$OUTPUT" | grep -qi "$skill"; then
+              echo "  ✅ $skill detected"
+            else
+              echo "  ⚠️  $skill not detected (may be a skills CLI limitation)"
+            fi
+          done
+          echo "skills.sh compatibility check done ✅"

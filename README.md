@@ -129,4 +129,8 @@ Building high-quality, multi-model-reviewed agent skills takes serious token bud
 
 ## License
 
-MIT
+**Code** (scripts, tooling): [MIT](./LICENSE)
+
+**Skill content** (`**/SKILL.md` and reference docs): [CC0 1.0 Universal](./LICENSE-CC0) — public domain, no attribution required.
+
+Why CC0 for skills: Skill docs are consumed by AI agents and freely incorporated into any workflow. Attribution requirements create friction in agent contexts where provenance tracking is impractical.
