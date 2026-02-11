@@ -1,5 +1,11 @@
 # @marcfargas/skills
 
+## 0.4.1
+
+### Patch Changes
+
+- Fix CI release pipeline: release now depends on validation passing, use `--full-depth` for skills.sh registration.
+
 ## 0.4.0
 
 ### Minor Changes
