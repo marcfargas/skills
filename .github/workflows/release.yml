@@ -1,7 +1,9 @@
 name: Release
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Validate Skills"]
+    types: [completed]
     branches: [main]
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
@@ -14,6 +16,7 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -38,7 +41,7 @@ jobs:
       - name: Register skills on skills.sh
         if: steps.changesets.outputs.published == 'true'
         run: |
-          for skill in gcloud pm2 pre-release vhs web-search; do
+          for skill in gcloud pm2 pre-release sheet-model vhs web-search; do
             echo "▸ Registering $skill..."
             npx -y skills add marcfargas/skills --skill "$skill" -g -a claude-code -y 2>&1 || echo "  ⚠️ $skill failed (non-blocking)"
           done
