@@ -41,8 +41,5 @@ jobs:
       - name: Register skills on skills.sh
         if: steps.changesets.outputs.published == 'true'
         run: |
-          for skill in gcloud pm2 pre-release sheet-model vhs web-search; do
-            echo "▸ Registering $skill..."
-            npx -y skills add marcfargas/skills --skill "$skill" -g -a claude-code -y 2>&1 || echo "  ⚠️ $skill failed (non-blocking)"
-          done
+          npx -y skills add marcfargas/skills --full-depth --all 2>&1 || echo "⚠️ skills.sh registration failed (non-blocking)"
           echo "skills.sh registration done ✅"
