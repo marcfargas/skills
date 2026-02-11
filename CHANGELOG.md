@@ -1,5 +1,29 @@
 # @marcfargas/skills
 
+## 0.4.0
+
+### Minor Changes
+
+- Add `sheet-model` skill — headless spreadsheet engine for AI agent financial modeling.
+
+  - Declarative API: `addRow`, `addSection`, `addScenarioSheet` with auto-tracked A1 references
+  - HyperFormula compute engine (395 built-in functions including PMT, NPV, IF, SUM)
+  - Export to `.xlsx` with live formulas, named ranges, conditional formatting, and frozen panes
+  - Scenario comparison sheets with threshold-based green/amber/red formatting
+  - Name validation against Excel column/cell reference collisions
+  - Reviewed by 4 AI agents (prompt engineering + practical perspectives)
+
+### Patch Changes
+
+- [`6a5d50f`](https://github.com/marcfargas/skills/commit/6a5d50f69e467ab357104b188d6eb9a1c33c2250) Thanks [@marcfargas](https://github.com/marcfargas)! - Add `pm2` process management skill for keeping services alive with auto-restart, ecosystem configs, and log management.
+
+- Documentation and CI improvements.
+
+  - Add `web-search` skill to package discovery
+  - Add `holdpty` pattern and Windows shell gotcha to `vhs` skill
+  - Add CC0 license for skill content, CI validation tests
+  - Improve README with multi-model review patterns and safety guidance
+
 ## 0.3.0
 
 ### Minor Changes
