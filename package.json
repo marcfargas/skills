@@ -17,6 +17,7 @@
     "gcloud",
     "pm2",
     "pre-release",
+    "repo-hygiene",
     "vhs",
     "web-search"
   ],
@@ -24,6 +25,7 @@
     "skills": [
       "azure",
       "google-cloud",
+      "maintenance",
       "process",
       "release",
       "search",
@@ -43,6 +45,7 @@
   "files": [
     "azure/",
     "google-cloud/",
+    "maintenance/",
     "process/",
     "release/",
     "search/",
