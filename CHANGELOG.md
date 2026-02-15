@@ -1,5 +1,34 @@
 # @marcfargas/skills
 
+## 0.5.0
+
+### Minor Changes
+
+- [`8651a19`](https://github.com/marcfargas/skills/commit/8651a1968e24c2e6c3b199e6b8a0d28c788aed48) Thanks [@marcfargas](https://github.com/marcfargas)! - Add `azcli` skill — Azure CLI with agent safety model.
+
+  - Hub + 7 reference files covering auth, IAM, compute, networking, serverless, containers, storage, data, and automation/CI-CD
+  - Agent safety model with 6 levels: READ, WRITE, DESTRUCTIVE, EXPENSIVE, SECURITY, FORBIDDEN
+  - Windows/Git Bash quoting gotchas for JMESPath queries
+  - Mirrors the `gcloud` hub + spoke architecture (~1660 lines)
+
+- [`8651a19`](https://github.com/marcfargas/skills/commit/8651a1968e24c2e6c3b199e6b8a0d28c788aed48) Thanks [@marcfargas](https://github.com/marcfargas)! - Add `repo-hygiene` skill — periodic repository health checks.
+
+  - 8 categories with ~45 checks: dependencies, git, CI/CD, code quality, docs, config, security, metadata
+  - Supports Node/TypeScript, Python, and Go projects
+  - Baseline tracking, auto-fix with tiered safety, and scoring system
+
+### Patch Changes
+
+- [`8651a19`](https://github.com/marcfargas/skills/commit/8651a1968e24c2e6c3b199e6b8a0d28c788aed48) Thanks [@marcfargas](https://github.com/marcfargas)! - Add lint, build, skills discovery, and CI hardening.
+
+  - Add markdown linting via `markdownlint-cli2` with agent-friendly config
+  - Add `npm run build` to produce `dist/skills.zip` for easy download and install
+  - Add `.well-known/skills/index.json` for Agent Skills spec discovery
+  - Add CI: lint, build, per-skill install verification, post-publish smoke tests
+  - Harden pre-release skill with 8 new security checks (trusted publishers, history scan, workflow audit, redaction review, skills discovery)
+  - Pin all GitHub Actions by SHA, add least-privilege permissions
+  - Exclude nested `node_modules` from npm package via `.npmignore` + negation patterns
+
 ## 0.4.1
 
 ### Patch Changes
