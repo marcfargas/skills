@@ -24,14 +24,14 @@
   ],
   "pi": {
     "skills": [
-      "azcli",
-      "gcloud",
-      "repo-hygiene",
-      "pm2",
-      "pre-release",
-      "web-search",
-      "sheet-model",
-      "vhs"
+      "skills/azcli",
+      "skills/gcloud",
+      "skills/repo-hygiene",
+      "skills/pm2",
+      "skills/pre-release",
+      "skills/web-search",
+      "skills/sheet-model",
+      "skills/vhs"
     ]
   },
   "scripts": {
@@ -49,14 +49,7 @@
   },
   "files": [
     ".well-known/",
-    "azcli/",
-    "gcloud/",
-    "repo-hygiene/",
-    "pm2/",
-    "pre-release/",
-    "web-search/",
-    "sheet-model/",
-    "vhs/",
+    "skills/",
     "!**/node_modules",
     "!**/package-lock.json",
     "README.md",

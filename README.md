@@ -6,14 +6,14 @@ Reusable skills for AI coding agents. Works with [pi](https://github.com/marioze
 
 | Category | Skill | Description |
 |----------|-------|-------------|
-| ☁️ Azure | [azcli](azcli/) | Azure CLI with agent safety model — hub + reference files |
-| ☁️ Google Cloud | [gcloud](gcloud/) | GCP CLI with agent safety model — hub + 7 reference files |
-| 🔧 Maintenance | [repo-hygiene](repo-hygiene/) | Periodic repo health check — deps, git, CI, code quality, docs, security |
-| ⚙️ Process | [pm2](pm2/) | Process management — keep services alive, auto-restart, monitoring, ecosystem configs |
-| 🚀 Release | [pre-release](pre-release/) | Pre-release checklist + AI-written changesets via @changesets/cli |
-| 🔍 Search | [web-search](web-search/) | Web search + content extraction via [ddgs](https://github.com/deedy5/ddgs) — no API keys |
-| 📊 Modeling | [sheet-model](sheet-model/) | Headless spreadsheet engine for financial modeling, scenario analysis, .xlsx with live formulas |
-| 🎬 Terminal | [vhs](vhs/) | Record terminal sessions as GIF/MP4 with [VHS](https://github.com/charmbracelet/vhs) |
+| ☁️ Azure | [azcli](skills/azcli/) | Azure CLI with agent safety model — hub + reference files |
+| ☁️ Google Cloud | [gcloud](skills/gcloud/) | GCP CLI with agent safety model — hub + 7 reference files |
+| 🔧 Maintenance | [repo-hygiene](skills/repo-hygiene/) | Periodic repo health check — deps, git, CI, code quality, docs, security |
+| ⚙️ Process | [pm2](skills/pm2/) | Process management — keep services alive, auto-restart, monitoring, ecosystem configs |
+| 🚀 Release | [pre-release](skills/pre-release/) | Pre-release checklist + AI-written changesets via @changesets/cli |
+| 🔍 Search | [web-search](skills/web-search/) | Web search + content extraction via [ddgs](https://github.com/deedy5/ddgs) — no API keys |
+| 📊 Modeling | [sheet-model](skills/sheet-model/) | Headless spreadsheet engine for financial modeling, scenario analysis, .xlsx with live formulas |
+| 🎬 Terminal | [vhs](skills/vhs/) | Record terminal sessions as GIF/MP4 with [VHS](https://github.com/charmbracelet/vhs) |
 
 ## Install
 
@@ -71,16 +71,18 @@ Skills use a **hub + spoke** architecture. The SKILL.md hub is ~140 lines — ju
 ## Structure
 
 ```text
-skills/
-├── azcli/               # Azure CLI — hub + 7 reference files
-├── gcloud/              # GCP CLI — hub + 7 reference files
-├── repo-hygiene/        # Periodic repo health check
-├── pm2/                 # Process management
-├── pre-release/         # Pre-release checklist + changesets
-├── web-search/          # Web search + content extraction
-├── sheet-model/         # Headless spreadsheet engine
-├── vhs/                 # Terminal session recording
-└── README.md
+.
+├── README.md
+├── LICENSE
+└── skills/
+    ├── azcli/          # Azure CLI — hub + 7 reference files
+    ├── gcloud/         # GCP CLI — hub + 7 reference files
+    ├── repo-hygiene/   # Periodic repo health check
+    ├── pm2/            # Process management
+    ├── pre-release/    # Pre-release checklist + changesets
+    ├── web-search/     # Web search + content extraction
+    ├── sheet-model/    # Headless spreadsheet engine
+    └── vhs/            # Terminal session recording
 ```
 
 ## External Skills

@@ -5,42 +5,42 @@
     {
       "name": "azcli",
       "description": "Azure CLI (az). Use when: managing Azure resources, deploying to App Service/Functions/Container Apps/AKS, working with Storage, SQL Database, Cosmos DB, VMs, VNets, NSGs, Key Vault, Entra ID (Azure AD), RBAC, Service Bus, Event Hubs, Container Registry, Azure Monitor, DNS, or any Azure service. Also covers: authentication, subscription management, CI/CD integration (GitHub Actions/Azure DevOps), Bicep/ARM templates, managed identities, and infrastructure automation.",
-      "path": "azcli"
+      "path": "skills/azcli"
     },
     {
       "name": "gcloud",
       "description": "Google Cloud Platform CLI (gcloud, gcloud storage, bq). Use when: managing GCP resources, deploying to Cloud Run/Cloud Functions/GKE/App Engine, working with Cloud Storage, BigQuery, IAM, Compute Engine, Cloud SQL, Pub/Sub, Secret Manager, Artifact Registry, Cloud Build, Cloud Scheduler, Cloud Tasks, Vertex AI, VPC/networking, DNS, logging/monitoring, or any GCP service. Also covers: authentication, project/config management, CI/CD integration, serverless deployments, container registry, docker push to GCP, managing secrets, Workload Identity Federation, and infrastructure automation.",
-      "path": "gcloud"
+      "path": "skills/gcloud"
     },
     {
       "name": "pm2",
       "description": "Process management with PM2 — start, stop, restart, monitor long-running processes. Use when: keeping services alive, auto-restart on crash, managing daemon processes, ecosystem configs, log management, startup scripts, process monitoring. Triggers: pm2, process manager, keep alive, daemon, auto-restart, ecosystem config, process monitoring.",
-      "path": "pm2"
+      "path": "skills/pm2"
     },
     {
       "name": "pre-release",
       "description": "Pre-release review and changeset generation for npm packages using @changesets/cli. Use when: preparing a release, generating changelogs, pre-release checklist, version bump, writing release notes, reviewing README before publish. Triggers: \"prepare release\", \"pre-release\", \"generate changelog\", \"write changesets\", \"release checklist\".",
-      "path": "pre-release"
+      "path": "skills/pre-release"
     },
     {
       "name": "repo-hygiene",
       "description": "Periodic repository health check — dependencies, git, CI/CD, code quality, docs, security. Use when: onboarding to a repo, weekly maintenance, after big refactors, before audits, \"is this repo in good shape?\". Triggers: \"repo hygiene\", \"health check\", \"repo health\", \"clean up repo\", \"maintenance check\", \"audit repo\", \"repo audit\".",
-      "path": "repo-hygiene"
+      "path": "skills/repo-hygiene"
     },
     {
       "name": "sheet-model",
       "description": "Headless spreadsheet engine for financial modeling, data analysis, and scenario comparison. Use when: building financial models with ratios and what-if scenarios, computing derived values from tabular data with formulas, producing .xlsx files with live formulas (not static values) for human review, any task where the agent would otherwise write imperative code to manipulate numbers that a spreadsheet does naturally. Triggers: financial model, scenario analysis, ratio computation, balance sheet, P&L, what-if, sensitivity analysis, banking ratios, spreadsheet model, build a model, projection, forecast. Do NOT use for: simple CSV/Excel read/write (use the xlsx skill), chart-only tasks, or data volumes exceeding ~5000 rows.",
-      "path": "sheet-model"
+      "path": "skills/sheet-model"
     },
     {
       "name": "vhs",
       "description": "Record terminal sessions as GIF/MP4/WebM using VHS (Charm.sh). Use when: create demo GIF, record terminal, terminal recording, demo video, tape file, animate CLI, screencast terminal, showcase command output, README demo, document CLI tool, generate terminal animation.",
-      "path": "vhs"
+      "path": "skills/vhs"
     },
     {
       "name": "web-search",
       "description": "Web search and content extraction using ddgs (multi-engine metasearch). No API keys required. Use when: searching documentation, facts, current information, news, fetching web content. Triggers: search the web, look up, find information, web search, news search, fetch page.",
-      "path": "web-search"
+      "path": "skills/web-search"
     }
   ]
 }
