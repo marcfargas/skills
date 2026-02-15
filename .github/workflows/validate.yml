@@ -9,10 +9,20 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Markdown lint
+        run: npx markdownlint-cli2
 
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
@@ -23,12 +33,68 @@ jobs:
       - name: Validate all skills (Agent Skills spec)
         run: |
           set -e
-          for skill_md in $(find . -name SKILL.md -not -path './.changeset/*'); do
+          for skill_md in $(find . -name SKILL.md -not -path './.changeset/*' -not -path '*/node_modules/*'); do
             skill_dir=$(dirname "$skill_md")
             echo "Validating $skill_dir..."
             agentskills validate "$skill_dir"
           done
           echo "All skills valid ✅"
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build skills.zip
+        run: npm run build
+
+      - name: Verify skills.zip contents
+        run: |
+          set -e
+          echo "📦 Checking dist/skills.zip..."
+          FILES=$(unzip -l dist/skills.zip | tail -n +4 | head -n -2 | awk '{print $4}')
+
+          # Every SKILL.md must be in the zip
+          for skill_md in $(find . -name SKILL.md -not -path './.changeset/*' -not -path '*/node_modules/*'); do
+            relative="${skill_md#./}"
+            if echo "$FILES" | grep -qF "$relative"; then
+              echo "  ✅ $relative"
+            else
+              echo "  ❌ MISSING: $relative"
+              exit 1
+            fi
+          done
+
+          # LICENSE + README must be present
+          for f in LICENSE LICENSE-CC0 README.md; do
+            if echo "$FILES" | grep -qF "$f"; then
+              echo "  ✅ $f"
+            else
+              echo "  ❌ MISSING: $f"
+              exit 1
+            fi
+          done
+
+          # No node_modules in the zip
+          if echo "$FILES" | grep -q "node_modules"; then
+            echo "  ❌ node_modules found in skills.zip!"
+            exit 1
+          fi
+
+          echo "skills.zip verified ✅"
+
+      - name: Upload skills.zip
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: skills-zip
+          path: dist/skills.zip
 
   skills-discovery:
     runs-on: ubuntu-latest
@@ -54,13 +120,8 @@ jobs:
         run: |
           set -e
           MISSING=0
-          for skill_md in $(find . -name SKILL.md -not -path './.changeset/*' -not -path './node_modules/*'); do
-            # Extract skill name from frontmatter
-            name=$(grep -A1 '^---' "$skill_md" | grep -oP '^name:\s*\K\S+' || true)
-            if [ -z "$name" ]; then
-              # Try multiline frontmatter
-              name=$(sed -n '/^---$/,/^---$/p' "$skill_md" | grep '^name:' | head -1 | sed 's/^name:\s*//')
-            fi
+          for skill_md in $(find . -name SKILL.md -not -path './.changeset/*' -not -path '*/node_modules/*'); do
+            name=$(sed -n '/^---$/,/^---$/p' "$skill_md" | grep '^name:' | head -1 | sed 's/^name:\s*//')
             if [ -n "$name" ] && ! grep -q "$name" README.md; then
               echo "❌ Skill '$name' (from $skill_md) not found in README.md"
               MISSING=1
@@ -82,6 +143,7 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 24
+          cache: npm
 
       - name: npm pack (simulate publish)
         run: |
@@ -95,8 +157,7 @@ jobs:
           FILES=$(tar tzf "$TARBALL")
 
           # Every SKILL.md must be in the tarball
-          for skill_md in $(find . -name SKILL.md -not -path './.changeset/*' -not -path './node_modules/*'); do
-            # Strip leading ./
+          for skill_md in $(find . -name SKILL.md -not -path './.changeset/*' -not -path '*/node_modules/*'); do
             relative="${skill_md#./}"
             expected="package/$relative"
             if echo "$FILES" | grep -qF "$expected"; then
@@ -107,6 +168,12 @@ jobs:
             fi
           done
 
+          # No node_modules in tarball
+          if echo "$FILES" | grep -q "node_modules"; then
+            echo "  ❌ node_modules found in tarball!"
+            exit 1
+          fi
+
           # LICENSE files must be present
           for f in LICENSE LICENSE-CC0 README.md; do
             if echo "$FILES" | grep -qF "package/$f"; then
@@ -116,7 +183,6 @@ jobs:
               exit 1
             fi
           done
-
           echo "Tarball contents verified ✅"
 
       - name: pi install (from tarball)
@@ -124,17 +190,14 @@ jobs:
           set -e
           npm install -g @mariozechner/pi-coding-agent
 
-          # Clean pi home
           export HOME=$(mktemp -d)
           mkdir -p "$HOME/.pi/agent"
           echo '{}' > "$HOME/.pi/agent/settings.json"
 
-          # Extract tarball, install from local path
           EXTRACT_DIR=$(mktemp -d)
           tar xzf "$TARBALL" -C "$EXTRACT_DIR"
           pi install "$EXTRACT_DIR/package"
 
-          # Verify it shows up
           OUTPUT=$(pi list 2>&1)
           echo "$OUTPUT"
           if echo "$OUTPUT" | grep -q "package"; then
@@ -144,19 +207,96 @@ jobs:
             exit 1
           fi
 
-      - name: skills add (skills.sh compatibility)
+      - name: skills add — default discovery (no flags)
         run: |
           set -e
-          # List available skills from local repo
-          OUTPUT=$(npx -y skills add . --list 2>&1) || true
+          WORK_DIR=$(mktemp -d)
+          tar xzf "$TARBALL" -C "$WORK_DIR"
+          REPO_DIR="$WORK_DIR/package"
+
+          # Test what 'skills add' finds with zero flags — baseline behavior
+          echo "=== Default discovery (no --full-depth) ==="
+          export HOME=$(mktemp -d)
+          DEFAULT_OUTPUT=$(npx -y skills add "$REPO_DIR" --list 2>&1) || true
+          echo "$DEFAULT_OUTPUT"
+
+          # Count skills found in default mode
+          DEFAULT_COUNT=$(echo "$DEFAULT_OUTPUT" | grep -oP 'Found \K[0-9]+' || echo "0")
+          echo "Default discovery found: $DEFAULT_COUNT skill(s)"
+
+          echo ""
+          echo "=== Full-depth discovery (--full-depth) ==="
+          FULL_OUTPUT=$(npx -y skills add "$REPO_DIR" --list --full-depth 2>&1) || true
+          echo "$FULL_OUTPUT"
+
+          FULL_COUNT=$(echo "$FULL_OUTPUT" | grep -oP 'Found \K[0-9]+' || echo "0")
+          echo "Full-depth discovery found: $FULL_COUNT skill(s)"
+
+          # Full-depth must find all skills
+          EXPECTED=$(find "$REPO_DIR" -name SKILL.md | wc -l)
+          if [ "$FULL_COUNT" -lt "$EXPECTED" ]; then
+            echo "⚠️ Full-depth found $FULL_COUNT but repo has $EXPECTED SKILL.md files"
+          fi
+          echo "Discovery baseline captured ✅"
+
+      - name: skills add — install all skills
+        run: |
+          set -e
+          WORK_DIR=$(mktemp -d)
+          tar xzf "$TARBALL" -C "$WORK_DIR"
+          REPO_DIR="$WORK_DIR/package"
+
+          export HOME=$(mktemp -d)
+          OUTPUT=$(npx -y skills add "$REPO_DIR" --full-depth --all 2>&1) || true
           echo "$OUTPUT"
 
-          # Check that at least our known skills are detected
-          for skill in gcloud pm2 pre-release vhs; do
-            if echo "$OUTPUT" | grep -qi "$skill"; then
-              echo "  ✅ $skill detected"
+          # Verify every skill was installed
+          SKILL_NAMES=$(find "$REPO_DIR" -name SKILL.md | while read f; do
+            sed -n '/^---$/,/^---$/p' "$f" | grep '^name:' | head -1 | sed 's/^name:\s*//'
+          done)
+
+          FAILED=0
+          for name in $SKILL_NAMES; do
+            if echo "$OUTPUT" | grep -qi "$name"; then
+              echo "  ✅ $name installed"
             else
-              echo "  ⚠️  $skill not detected (may be a skills CLI limitation)"
+              echo "  ❌ $name NOT found in output"
+              FAILED=1
             fi
           done
-          echo "skills.sh compatibility check done ✅"
+
+          if [ "$FAILED" -eq 1 ]; then
+            echo "❌ Some skills failed to install"
+            exit 1
+          fi
+          echo "All skills installed via 'skills add' ✅"
+
+      - name: skills add — install each skill individually
+        run: |
+          set -e
+          WORK_DIR=$(mktemp -d)
+          tar xzf "$TARBALL" -C "$WORK_DIR"
+          REPO_DIR="$WORK_DIR/package"
+
+          SKILL_NAMES=$(find "$REPO_DIR" -name SKILL.md | while read f; do
+            sed -n '/^---$/,/^---$/p' "$f" | grep '^name:' | head -1 | sed 's/^name:\s*//'
+          done)
+
+          FAILED=0
+          for name in $SKILL_NAMES; do
+            export HOME=$(mktemp -d)
+            OUTPUT=$(npx -y skills add "$REPO_DIR" --skill "$name" --full-depth --all 2>&1) || true
+            if echo "$OUTPUT" | grep -qi "$name"; then
+              echo "  ✅ skills add --skill $name"
+            else
+              echo "  ❌ skills add --skill $name FAILED"
+              echo "$OUTPUT" | tail -5
+              FAILED=1
+            fi
+          done
+
+          if [ "$FAILED" -eq 1 ]; then
+            echo "❌ Some individual skill installs failed"
+            exit 1
+          fi
+          echo "All individual skill installs verified ✅"
