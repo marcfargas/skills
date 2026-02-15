@@ -6,14 +6,14 @@ Reusable skills for AI coding agents. Works with [pi](https://github.com/marioze
 
 | Category | Skill | Description |
 |----------|-------|-------------|
-| ☁️ Azure | [azcli](azure/azcli/) | Azure CLI with agent safety model — hub + reference files |
-| ☁️ Google Cloud | [gcloud](google-cloud/gcloud/) | GCP CLI with agent safety model — hub + 7 reference files |
-| 🔧 Maintenance | [repo-hygiene](maintenance/repo-hygiene/) | Periodic repo health check — deps, git, CI, code quality, docs, security |
-| ⚙️ Process | [pm2](process/pm2/) | Process management — keep services alive, auto-restart, monitoring, ecosystem configs |
-| 🚀 Release | [pre-release](release/pre-release/) | Pre-release checklist + AI-written changesets via @changesets/cli |
-| 🔍 Search | [web-search](search/web-search/) | Web search + content extraction via [ddgs](https://github.com/deedy5/ddgs) — no API keys |
+| ☁️ Azure | [azcli](azcli/) | Azure CLI with agent safety model — hub + reference files |
+| ☁️ Google Cloud | [gcloud](gcloud/) | GCP CLI with agent safety model — hub + 7 reference files |
+| 🔧 Maintenance | [repo-hygiene](repo-hygiene/) | Periodic repo health check — deps, git, CI, code quality, docs, security |
+| ⚙️ Process | [pm2](pm2/) | Process management — keep services alive, auto-restart, monitoring, ecosystem configs |
+| 🚀 Release | [pre-release](pre-release/) | Pre-release checklist + AI-written changesets via @changesets/cli |
+| 🔍 Search | [web-search](web-search/) | Web search + content extraction via [ddgs](https://github.com/deedy5/ddgs) — no API keys |
 | 📊 Modeling | [sheet-model](sheet-model/) | Headless spreadsheet engine for financial modeling, scenario analysis, .xlsx with live formulas |
-| 🎬 Terminal | [vhs](terminal/vhs/) | Record terminal sessions as GIF/MP4 with [VHS](https://github.com/charmbracelet/vhs) |
+| 🎬 Terminal | [vhs](vhs/) | Record terminal sessions as GIF/MP4 with [VHS](https://github.com/charmbracelet/vhs) |
 
 ## Install
 
@@ -72,21 +72,14 @@ Skills use a **hub + spoke** architecture. The SKILL.md hub is ~140 lines — ju
 
 ```text
 skills/
-├── azure/
-│   └── azcli/           # Azure CLI skill
-├── google-cloud/
-│   └── gcloud/          # 8 files, ~1100 lines total
-├── maintenance/
-│   └── repo-hygiene/    # 1 file — periodic health check
-├── process/
-│   └── pm2/             # 1 file
-├── release/
-│   └── pre-release/     # 1 file
-├── search/
-│   └── web-search/      # SKILL.md + search.js + content.js
+├── azcli/               # Azure CLI — hub + 7 reference files
+├── gcloud/              # GCP CLI — hub + 7 reference files
+├── repo-hygiene/        # Periodic repo health check
+├── pm2/                 # Process management
+├── pre-release/         # Pre-release checklist + changesets
+├── web-search/          # Web search + content extraction
 ├── sheet-model/         # Headless spreadsheet engine
-├── terminal/
-│   └── vhs/             # 1 file
+├── vhs/                 # Terminal session recording
 └── README.md
 ```
 

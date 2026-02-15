@@ -24,14 +24,14 @@
   ],
   "pi": {
     "skills": [
-      "azure",
-      "google-cloud",
-      "maintenance",
-      "process",
-      "release",
-      "search",
+      "azcli",
+      "gcloud",
+      "repo-hygiene",
+      "pm2",
+      "pre-release",
+      "web-search",
       "sheet-model",
-      "terminal"
+      "vhs"
     ]
   },
   "scripts": {
@@ -49,14 +49,14 @@
   },
   "files": [
     ".well-known/",
-    "azure/",
-    "google-cloud/",
-    "maintenance/",
-    "process/",
-    "release/",
-    "search/",
+    "azcli/",
+    "gcloud/",
+    "repo-hygiene/",
+    "pm2/",
+    "pre-release/",
+    "web-search/",
     "sheet-model/",
-    "terminal/",
+    "vhs/",
     "!**/node_modules",
     "!**/package-lock.json",
     "README.md",
