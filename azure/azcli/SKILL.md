@@ -56,6 +56,7 @@ Operations classified by risk. **Follow this model for all az commands.**
 | **FORBIDDEN** | Refuse; escalate to human | `az ad app credential reset` with plaintext secrets, `az group delete` on production RGs, passwords in CLI args |
 
 **Rules**:
+
 - **Never combine `--yes` with destructive operations** — it suppresses the only safety gate
 - **Never put passwords/secrets as command-line arguments** — visible in process list & shell history
 - **Always use `-o json`** for machine-parseable output (agents can't reliably parse tables)
@@ -63,7 +64,7 @@ Operations classified by risk. **Follow this model for all az commands.**
 
 ## Command Structure
 
-```
+```text
 az [GROUP] [SUBGROUP] COMMAND [ARGS] [FLAGS]
 ```
 

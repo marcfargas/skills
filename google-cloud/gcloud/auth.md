@@ -47,6 +47,7 @@ gcloud auth application-default revoke
 ```
 
 **ADC search order**:
+
 1. `GOOGLE_APPLICATION_CREDENTIALS` env var
 2. `~/.config/gcloud/application_default_credentials.json`
 3. GCE/GKE metadata server (when running on GCP)
@@ -102,6 +103,7 @@ gcloud config get-value compute/zone
 ```
 
 Common mismatches that cause failures:
+
 - VM in `europe-west1-b` connecting to Cloud SQL in `us-central1`
 - GKE cluster in one zone, persistent disks in another
 - Cloud Run in `europe-west1` accessing a VPC in `us-east1`

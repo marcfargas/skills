@@ -69,7 +69,7 @@ Fetches a URL and extracts readable content as markdown.
 
 ### Text search
 
-```
+```text
 --- Result 1 ---
 Title: Page Title
 Link: https://example.com/page
@@ -83,7 +83,7 @@ Content: (if --content flag used)
 
 ### News search
 
-```
+```text
 --- Result 1 ---
 Title: Article Title
 Link: https://news.example.com/article

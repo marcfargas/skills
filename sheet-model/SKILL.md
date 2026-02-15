@@ -28,7 +28,7 @@ npm install
 
 ## Architecture
 
-```
+```text
 Agent code (declarative)          SheetModel wrapper          Output
 ────────────────────────    ──────────────────────────    ──────────────
 addRow('Revenue', 701384)   → HyperFormula (compute)     → Console table
@@ -69,7 +69,7 @@ M.addRow('Data', '  Margin', '=EBITDA/Revenue', { name: 'Margin' });
 ```
 
 > **Build top-to-bottom**: Names must be defined before any formula that references them. Define data rows first, then formulas.
-
+>
 > `addBlank()` and `addSection()` also return the A1 row number (useful for SUM range boundaries).
 
 **When to use which formula style:**
@@ -85,6 +85,7 @@ M.addRow('Data', '  Margin', '=EBITDA/Revenue', { name: 'Margin' });
 ### Named References
 
 The `{ name: 'Revenue' }` option on `addRow`:
+
 1. Registers a HyperFormula named expression (usable in any formula as `Revenue`)
 2. Tracks the A1 row for internal cross-referencing
 3. Exports as a proper Excel named range in .xlsx (via `cell.names`)
@@ -92,6 +93,7 @@ The `{ name: 'Revenue' }` option on `addRow`:
 > ⚠️ **Names are global** across all sheets. Using `{ name: 'Revenue' }` in two different sheets overwrites the first. Use unique, prefixed names for multi-sheet models: `{ name: 'Rev2024' }`, `{ name: 'Rev2025' }`.
 
 Name validation rules:
+
 - Must be valid Excel names: start with a letter or underscore, no spaces
 - **Cannot collide with Excel cell references**: names like `AC`, `PC`, `R1C1`, `A1` are rejected with a clear error
 - Use descriptive names: `AdjPC`, `TotalAC`, `CurrentAssets` (not `AC`, `PC`, `CA`)
@@ -151,9 +153,9 @@ M.addScenarioSheet('Scenarios', {
 ```
 
 > **Do NOT call `addSheet()` before `addScenarioSheet()`** — it creates the sheet internally. Only use `addSheet()` for data sheets.
-
+>
 > **`addScenarioSheet` is a one-shot call.** You cannot add rows to a scenario sheet after creation. Include all inputs, outputs, and sections in the config object.
-
+>
 > **Every output you want to reference later MUST have a `name` property.** Without it, `{ThatOutput}` in a subsequent formula will throw an error.
 
 #### Formula Reference Resolution in Scenarios
@@ -223,6 +225,7 @@ M.addRow('Data', '  Margin', '=IF(Revenue=0, 0, EBITDA/Revenue)', { name: 'Margi
 ```
 
 Common causes of formula errors:
+
 - Division by zero in ratios → guard with `IF(denominator=0, 0, numerator/denominator)`
 - Misspelled named expression → throws immediately with clear error message
 - Circular reference → throws immediately with row context
@@ -245,6 +248,7 @@ await M.exportXlsx('output.xlsx', {
 ```
 
 The exported file contains:
+
 - **Live formulas** (not static values) — user can change inputs and see results update
 - **Named ranges** on all named cells (visible in Excel's Name Manager)
 - **Conditional formatting** on cells with thresholds (green/amber/red)

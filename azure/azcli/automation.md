@@ -187,6 +187,7 @@ steps:
 ```
 
 Setup:
+
 ```bash
 # Create app registration + federated credential
 az ad app create --display-name "github-actions-myrepo"

@@ -226,6 +226,7 @@ vhs my-session.tape
 Use [holdpty](https://github.com/marcfargas/holdpty) to record full-color TUI applications — apps that need a real PTY for colors, take time to start, or are already running. holdpty provides the PTY, VHS captures the output.
 
 **Why this matters:**
+
 - TUI apps (pi, htop, k9s, lazygit) need a real PTY for colors and layout
 - Slow-starting apps (AI agents, servers) can be ready before recording begins
 - Already-running processes can be recorded on demand for monitoring/sharing
@@ -290,6 +291,7 @@ Ctrl+C
 ```
 
 **Use cases:**
+
 - **README demos** — launch app, let it start, record the interesting part
 - **Monitoring snapshots** — capture what a running service looks like right now
 - **Bug reports** — record a live reproduction with full colors

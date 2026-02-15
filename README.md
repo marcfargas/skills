@@ -70,7 +70,7 @@ Skills use a **hub + spoke** architecture. The SKILL.md hub is ~140 lines — ju
 
 ## Structure
 
-```
+```text
 skills/
 ├── azure/
 │   └── azcli/           # Azure CLI skill

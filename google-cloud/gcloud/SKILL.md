@@ -53,6 +53,7 @@ Operations classified by risk. **Follow this model for all gcloud commands.**
 | **FORBIDDEN** | Refuse; escalate to human | `gcloud iam service-accounts keys create`, `gcloud projects delete`, passwords in CLI args |
 
 **Rules**:
+
 - **Never combine `--quiet` with destructive operations** — it suppresses the only safety gate
 - **Never put passwords/secrets as command-line arguments** — visible in process list & shell history
 - **Always use `--format=json`** for machine-parseable output (agents can't reliably parse tables)
@@ -60,7 +61,7 @@ Operations classified by risk. **Follow this model for all gcloud commands.**
 
 ## Command Structure
 
-```
+```text
 gcloud [RELEASE_LEVEL] COMPONENT ENTITY OPERATION [ARGS] [FLAGS]
 ```
 

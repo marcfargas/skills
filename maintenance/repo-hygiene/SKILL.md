@@ -63,6 +63,7 @@ Determine: stack(s), git remote, default branch, CI system (GitHub Actions, GitL
 | D6 | Duplicate dependencies | `npm ls --all --json 2>/dev/null \| grep -c '"deduped"'` | ℹ️ Info |
 
 **D5 — Lockfile freshness check:**
+
 ```bash
 # package.json changed more recently than lockfile?
 LOCK_DATE=$(git log -1 --format=%ct -- package-lock.json 2>/dev/null || echo 0)
@@ -73,6 +74,7 @@ fi
 ```
 
 **How to fix:**
+
 - D1: `npm audit fix` for compatible fixes; `npm audit fix --force` for breaking (review changes). For stubborn advisories: check if the vuln is reachable, or override in `package.json` `overrides`.
 - D2: `npm update` for minor/patch; `npm install <pkg>@latest` for major (check changelogs).
 - D3: `npm uninstall <pkg>` for each unused dep.
@@ -90,6 +92,7 @@ fi
 | D5 | Lockfile freshness | Compare `uv.lock` vs `pyproject.toml` timestamps | 🟡 Fix Soon |
 
 **How to fix:**
+
 - D1: `uv pip install --upgrade <pkg>` for each vulnerable package. Check advisories for minimum safe version.
 - D2: `uv pip install --upgrade <pkg>` per package, or `uv lock --upgrade` for all.
 - D3: Remove from `[project.dependencies]` in `pyproject.toml`, then `uv sync`.
@@ -104,6 +107,7 @@ fi
 | D3 | Unused dependencies | `go mod tidy -v` (reports removed) | 🟡 Fix Soon |
 
 **How to fix:**
+
 - D1: `go get <module>@latest` for vulnerable deps, then `go mod tidy`.
 - D2: `go get -u ./...` for all, or `go get <module>@latest` selectively.
 - D3: `go mod tidy` removes unused; commit `go.mod` and `go.sum`.
@@ -122,6 +126,7 @@ fi
 | G6 | Uncommitted changes | `git status --porcelain` | ℹ️ Info |
 
 **G3 — Large files check:**
+
 ```bash
 # Top 10 largest tracked files
 git ls-files -z | xargs -0 -I{} git log --diff-filter=A --format='%H' -1 -- '{}' | head -20
@@ -132,12 +137,14 @@ git ls-files -z | xargs -0 du -sh 2>/dev/null | sort -rh | head -10
 **G4 — .gitignore completeness:**
 
 Must include (per stack):
+
 - **Universal**: `.env`, `.env.*`, `*.local`, `.DS_Store`, `Thumbs.db`, `*.swp`, `.idea/`, `.vscode/` (or be deliberate about tracking it)
 - **Node**: `node_modules/`, `dist/`, `build/`, `coverage/`, `.turbo/`, `.next/`
 - **Python**: `__pycache__/`, `*.pyc`, `.venv/`, `venv/`, `.mypy_cache/`, `.pytest_cache/`, `*.egg-info/`
 - **Go**: binary name (check `go build -o`), `vendor/` (if not vendoring)
 
 **How to fix:**
+
 - G1: `git branch -d <branch>` for each merged local branch.
 - G2: `git push origin --delete <branch>` for each merged remote branch. Be careful — confirm with team.
 - G3: For files that shouldn't be tracked: add to `.gitignore`, `git rm --cached <file>`. For files already in history: `git filter-repo` or BFG Repo-Cleaner (destructive — confirm first).
@@ -160,6 +167,7 @@ Skip if no CI configuration found.
 | C6 | Node/Python version matches project | Compare workflow matrix with `engines`, `.nvmrc`, `pyproject.toml [requires-python]` | 🟡 Fix Soon |
 
 **How to fix:**
+
 - C2: Replace `uses: actions/checkout@v4` with `uses: actions/checkout@<full-sha>`. Find SHA: `gh api repos/actions/checkout/git/ref/tags/v4 --jq .object.sha` or check the releases page.
 - C3: Add explicit `permissions:` at job level. Start with `contents: read` and add only what's needed.
 - C4: Remove secret interpolation. Use `environment:` blocks or write to files with masking.
@@ -182,6 +190,7 @@ Skip if no CI configuration found.
 | Q8 | Dead exports (TS) | `npx ts-prune 2>/dev/null \| grep -v '(used in module)'` | ℹ️ Info |
 
 **How to fix:**
+
 - Q1: Triage each TODO — either do it, create an issue/task for it, or remove it if obsolete.
 - Q2: Replace with a proper logger, or remove debug logging. `grep -rn 'console.log' src/` to find them.
 - Q3: Either fix the underlying issue and un-skip, or delete the test if the feature was removed.
@@ -203,6 +212,7 @@ Skip if no CI configuration found.
 | F7 | AGENTS.md references valid paths | If `.pi/AGENTS.md` exists, check that referenced files/dirs exist | 🟡 Fix Soon |
 
 **F4 — Broken link check:**
+
 ```bash
 # Find markdown links and verify targets exist
 grep -roE '\[([^]]+)\]\(([^)]+)\)' *.md docs/**/*.md 2>/dev/null | \
@@ -217,6 +227,7 @@ grep -roE '\[([^]]+)\]\(([^)]+)\)' *.md docs/**/*.md 2>/dev/null | \
 ```
 
 **How to fix:**
+
 - F1: Write a README with: what it does, how to install, how to use, prerequisites, license.
 - F2: Review README against current code — update examples, API docs, feature lists.
 - F3: Add a CHANGELOG.md. Consider `@changesets/cli` for automated generation (see `pre-release` skill).
@@ -239,6 +250,7 @@ grep -roE '\[([^]]+)\]\(([^)]+)\)' *.md docs/**/*.md 2>/dev/null | \
 | X6 | `.nvmrc` / `.python-version` matches | Compare with `engines` / `requires-python` / CI config | ℹ️ Info |
 
 **How to fix:**
+
 - X1: Add `.editorconfig`. Minimal: `root = true`, `[*]` block with `indent_style`, `indent_size`, `end_of_line`, `insert_final_newline`.
 - X2: Set `"strict": true` in `tsconfig.json`. Fix resulting type errors (usually worth it).
 - X3–X4: Add config files. Use the project's existing style as a baseline.
@@ -260,6 +272,7 @@ Lightweight security checks for ongoing hygiene. For the full pre-release securi
 | S5 | No broad file permissions | Check for `chmod 777` or `0777` in scripts | 🔴 Fix Now |
 
 **How to fix:**
+
 - S1: `git rm --cached <file>`, add to `.gitignore`, commit. If the file contained real secrets, rotate them immediately — they're in git history.
 - S2: Create `.env.example` with placeholder values (`<REPLACE_ME>`) for every var in `.env`.
 - S3: Move secrets to env vars or a secrets manager. Replace in code with `process.env.VAR` / `os.environ["VAR"]`.
@@ -279,6 +292,7 @@ Lightweight security checks for ongoing hygiene. For the full pre-release securi
 | M5 | Pi package compliance | If ships skills/extensions: `pi-package` keyword, `pi` manifest, `files` includes skill dirs | 🟡 Fix Soon (if applicable) |
 
 **How to fix:**
+
 - M1–M3: Add the missing fields to `package.json` or `pyproject.toml`.
 - M4: Create `.github/FUNDING.yml` with `github: <username>`.
 - M5: See [pi package docs](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent#pi-packages) for required fields.
@@ -309,7 +323,7 @@ Save a baseline after each run to detect drift over time. Store at `.pi/hygiene-
 
 On subsequent runs, compare with baseline and flag regressions:
 
-```
+```text
 📉 Dependencies: 0 → 3 vulnerabilities (regression since last check)
 📈 Quality: 15 → 5 TODOs (improvement!)
 →  CI: unchanged — 2 unpinned actions remain
