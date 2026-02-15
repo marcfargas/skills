@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Build output
+dist/
+
 # Demo artifacts (tapes are source, GIFs are generated)
 *.gif
 *.mp4

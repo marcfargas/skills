@@ -1,0 +1,26 @@
+# Markdownlint config for agent skill docs
+# Skills contain long CLI commands, tables, and reference content — relax formatting rules
+
+config:
+  # Disable: CLI commands and tables are naturally long
+  MD013: false
+  # Disable: compact table style is fine for reference docs
+  MD060: false
+  # Disable: skills use duplicate headings across sections (e.g. "## Examples")
+  MD024: false
+  # Disable: inline HTML used for badges, links
+  MD033: false
+  # Disable: trailing punctuation in headings (e.g. "## What's new?")
+  MD026: false
+  # Disable: multiple top-level headings — reference files may restructure
+  MD025: false
+  # Disable: first line must be heading — SKILL.md has frontmatter
+  MD041: false
+  # Allow bare URLs in docs
+  MD034: false
+
+globs:
+  - "**/*.md"
+  - "!**/node_modules"
+  - "!.changeset"
+  - "!CHANGELOG.md"

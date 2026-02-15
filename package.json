@@ -18,6 +18,7 @@
     "pm2",
     "pre-release",
     "repo-hygiene",
+    "sheet-model",
     "vhs",
     "web-search"
   ],
@@ -34,6 +35,8 @@
     ]
   },
   "scripts": {
+    "lint": "markdownlint-cli2",
+    "build": "node build-zip.mjs",
     "skills:index": "node generate-skills-index.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version",
@@ -41,7 +44,8 @@
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.2",
-    "@changesets/cli": "^2.29.8"
+    "@changesets/cli": "^2.29.8",
+    "markdownlint-cli2": "^0.20.0"
   },
   "files": [
     ".well-known/",
@@ -53,6 +57,8 @@
     "search/",
     "sheet-model/",
     "terminal/",
+    "!**/node_modules",
+    "!**/package-lock.json",
     "README.md",
     "LICENSE",
     "LICENSE-CC0"

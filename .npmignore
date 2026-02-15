@@ -1,0 +1,28 @@
+# Exclude nested node_modules from sub-skills
+**/node_modules/
+
+# Exclude nested package-lock.json
+**/package-lock.json
+
+# Build artifacts
+dist/
+
+# Dev files
+.pi/
+.github/
+.changeset/
+.markdownlint-cli2.yaml
+build-zip.mjs
+generate-skills-index.mjs
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.*
