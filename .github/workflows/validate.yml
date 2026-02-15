@@ -27,6 +27,50 @@ jobs:
           done
           echo "All skills valid ✅"
 
+  skills-discovery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Verify .well-known/skills/index.json is up to date
+        run: |
+          set -e
+          node generate-skills-index.mjs
+          if ! git diff --exit-code .well-known/skills/index.json; then
+            echo "❌ .well-known/skills/index.json is out of date!"
+            echo "Run: node generate-skills-index.mjs"
+            exit 1
+          fi
+          echo ".well-known/skills/index.json is up to date ✅"
+
+      - name: Verify README lists all skills
+        run: |
+          set -e
+          MISSING=0
+          for skill_md in $(find . -name SKILL.md -not -path './.changeset/*' -not -path './node_modules/*'); do
+            # Extract skill name from frontmatter
+            name=$(grep -A1 '^---' "$skill_md" | grep -oP '^name:\s*\K\S+' || true)
+            if [ -z "$name" ]; then
+              # Try multiline frontmatter
+              name=$(sed -n '/^---$/,/^---$/p' "$skill_md" | grep '^name:' | head -1 | sed 's/^name:\s*//')
+            fi
+            if [ -n "$name" ] && ! grep -q "$name" README.md; then
+              echo "❌ Skill '$name' (from $skill_md) not found in README.md"
+              MISSING=1
+            else
+              echo "  ✅ $name"
+            fi
+          done
+          if [ "$MISSING" -eq 1 ]; then
+            echo "README.md is missing skills — update the Available Skills table"
+            exit 1
+          fi
+          echo "README lists all skills ✅"
+
   package-test:
     runs-on: ubuntu-latest
     steps:

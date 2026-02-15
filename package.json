@@ -34,6 +34,7 @@
     ]
   },
   "scripts": {
+    "skills:index": "node generate-skills-index.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish"
@@ -43,6 +44,7 @@
     "@changesets/cli": "^2.29.8"
   },
   "files": [
+    ".well-known/",
     "azure/",
     "google-cloud/",
     "maintenance/",
