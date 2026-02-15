@@ -50,9 +50,17 @@ Run these checks against the project root. Report each as ✅ / ❌ / ⚠️:
 | 10 | .gitignore covers: `node_modules`, `dist`, `.env`, editor config | Read `.gitignore` |
 | 11 | `package.json` has required fields: name, version, description, license, repository | Read and verify |
 | 12 | `.changeset/config.json` exists and is configured | Read and verify |
+| 13 | GitHub Actions release workflow uses Trusted Publishers (OIDC), **not** `NPM_TOKEN` | Read `.github/workflows/release.yml`; verify `id-token: write` permission present and no `NPM_TOKEN` / `NODE_AUTH_TOKEN` secrets used |
+| 14 | Trusted Publisher configured on npmjs.com for this package | Ask user to confirm (cannot be checked programmatically) |
+| 15 | History scan clean (gitleaks + trufflehog) | `gitleaks detect --source . --verbose` AND `trufflehog git file://. --since-commit=HEAD~0 --fail` — both must pass with zero findings |
+| 16 | Workflow security audit | Read all `.github/workflows/*.yml` — verify: least-privilege `permissions:` (job-level, not `write-all`), actions pinned by SHA (not tag), no `pull_request_target` with PR head checkout, no secret interpolation in `echo`/`$GITHUB_OUTPUT`/`$GITHUB_ENV`, no broad `GITHUB_TOKEN` perms, no `env` dumping in debug steps |
+| 17 | Template-only values in examples | `git grep -rE '(ghp_[A-Za-z0-9]{36}|npm_[A-Za-z0-9]{36}|sk-[A-Za-z0-9]{48}|AKIA[A-Z0-9]{16}|xox[bprs]-)' -- ':!node_modules' ':!*.lock'` — must be zero; all example configs must use `<REPLACE_ME>` placeholders |
+| 18 | No `.local` files tracked | `git ls-files '*.local' '*.local.*' '.env.local'` — must return empty |
+| 19 | Redaction review for docs & screenshots | Scan README, docs/, and any images for: internal domains (`*.internal`, `*.corp`), tenant/account IDs, internal route patterns, environment naming conventions, unredacted screenshots |
+| 20 | Skills discovery (if project ships skills) | Only if `SKILL.md` files exist: (a) `.well-known/skills/index.json` exists and lists every skill found by `find . -name SKILL.md`, (b) README lists every skill in a discoverable table, (c) `package.json` `files` includes `.well-known/`. Run `npx skills add . --list` and verify output matches expectations. |
 
-**Blockers** (must fix before release): checks 1-5, 8, 11-12.
-**Warnings** (should fix): checks 6-7, 9-10.
+**Blockers** (must fix before release): checks 1-5, 8, 11-18, 20 (if applicable).
+**Warnings** (should fix): checks 6-7, 9-10, 19.
 **Info**: anything else notable.
 
 ### Step 2: Generate Changesets
@@ -148,30 +156,13 @@ Use `minor` (0.1.0) for initial releases unless the project is already at 1.x.
 
 ### Step 3: Fresh-Eyes README Review (Optional)
 
-Load the `run-agents` skill. Spawn 2 agents on different models to review the README as first-time users:
+Load the `run-agents` skill. Use pi-subagents to spawn 2 parallel agents on different models to review the README as first-time users:
 
-```bash
-PROJECT_PATH="<absolute-path-to-project>"
-
-PROMPT='Read the README.md in '"$PROJECT_PATH"'. You are a developer who has NEVER seen this project.
-
-Can you answer these questions from the README alone?
-1. What does this project do? (one sentence)
-2. How do I install it?
-3. How do I use it? (basic example)
-4. What are the prerequisites?
-5. Where do I report bugs or get help?
-
-For each: quote the relevant text you found, or say MISSING.
-Then: list anything confusing, outdated, or that assumes prior knowledge.
-Be specific — quote the text that confused you.'
-
-REVIEWS="$PROJECT_PATH/reviews"
-mkdir -p "$REVIEWS"
-
-pi -p --no-session --tools read --model google/gemini-3-pro "$PROMPT" > "$REVIEWS/readme-gemini.md" 2>/dev/null &
-pi -p --no-session --tools read --model github-copilot/gpt-5.3 "$PROMPT" > "$REVIEWS/readme-gpt.md" 2>/dev/null &
-wait
+```json
+{ "tasks": [
+    { "agent": "_arch-reviewer", "task": "Read the README.md in <project-path>. You are a developer who has NEVER seen this project. Can you answer: (1) What does it do? (2) How to install? (3) How to use? (4) Prerequisites? (5) Where to get help? For each: quote relevant text or say MISSING. Then list anything confusing or that assumes prior knowledge.", "model": "google/gemini-3-pro" },
+    { "agent": "_arch-reviewer", "task": "Read the README.md in <project-path>. You are a developer who has NEVER seen this project. Can you answer: (1) What does it do? (2) How to install? (3) How to use? (4) Prerequisites? (5) Where to get help? For each: quote relevant text or say MISSING. Then list anything confusing or that assumes prior knowledge.", "model": "github-copilot/gpt-5.3" }
+]}
 ```
 
 Read both outputs and note any gaps.
@@ -324,9 +315,10 @@ GitHub Actions with the npm registry. No `NPM_TOKEN` secret required.
 After verifying Trusted Publishing works, go to package Settings → Publishing access →
 **"Require two-factor authentication and disallow tokens"** for maximum security.
 
-**Fallback (token-based)**: If Trusted Publishing isn't available for your setup, add an
-`NPM_TOKEN` secret (Settings → Secrets → Actions) with a [granular access token](https://docs.npmjs.com/creating-and-viewing-access-tokens)
-scoped to publish. Add to the workflow env: `NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}`.
+**⚠️ NPM_TOKEN is deprecated**: Do **not** use `NPM_TOKEN` secrets for publishing from
+GitHub Actions. Trusted Publishers (OIDC) is the only supported method. If you encounter
+an existing workflow using `NPM_TOKEN`, migrate it to Trusted Publishers. See:
+https://docs.npmjs.com/trusted-publishers
 
 ---
 
