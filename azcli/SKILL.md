@@ -74,13 +74,13 @@ Key global flags: `--subscription`, `--output` (`-o`), `--query`, `--verbose`, `
 
 | Service | File | Key Commands |
 |---------|------|-------------|
-| Auth & Config | [auth.md](auth.md) | Login, service principals, managed identities, subscriptions, config |
-| IAM & Resources | [iam.md](iam.md) | Resource groups, RBAC, Entra ID (Azure AD), Key Vault |
-| Compute & Networking | [compute.md](compute.md) | VMs, VNets, NSGs, DNS, load balancers, monitoring |
-| Serverless & Containers | [serverless.md](serverless.md) | App Service, Functions, Container Apps, AKS, Container Registry |
-| Storage | [storage.md](storage.md) | Storage accounts, blobs, file shares, queues, tables |
-| Data | [data.md](data.md) | SQL Database, Cosmos DB, Service Bus, Event Hubs |
-| Automation & CI/CD | [automation.md](automation.md) | Scripting, output formats, JMESPath, Bicep/ARM, GitHub Actions |
+| Auth & Config | [auth.md](ref/auth.md) | Login, service principals, managed identities, subscriptions, config |
+| IAM & Resources | [iam.md](ref/iam.md) | Resource groups, RBAC, Entra ID (Azure AD), Key Vault |
+| Compute & Networking | [compute.md](ref/compute.md) | VMs, VNets, NSGs, DNS, load balancers, monitoring |
+| Serverless & Containers | [serverless.md](ref/serverless.md) | App Service, Functions, Container Apps, AKS, Container Registry |
+| Storage | [storage.md](ref/storage.md) | Storage accounts, blobs, file shares, queues, tables |
+| Data | [data.md](ref/data.md) | SQL Database, Cosmos DB, Service Bus, Event Hubs |
+| Automation & CI/CD | [automation.md](ref/automation.md) | Scripting, output formats, JMESPath, Bicep/ARM, GitHub Actions |
 
 **Read the per-service file for full command reference.**
 

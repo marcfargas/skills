@@ -71,13 +71,13 @@ Key global flags: `--project`, `--format`, `--filter`, `--limit`, `--quiet`, `--
 
 | Service | File | Key Commands |
 |---------|------|-------------|
-| Auth & Config | [auth.md](auth.md) | Login, ADC, impersonation, config profiles |
-| IAM & Projects | [iam.md](iam.md) | Projects, APIs, service accounts, Secret Manager |
-| Compute & Networking | [compute.md](compute.md) | VMs, SSH, firewall, VPC, DNS, static IPs |
-| Serverless | [serverless.md](serverless.md) | Cloud Run, Functions, App Engine, Scheduler, Tasks |
-| Storage & Artifacts | [storage.md](storage.md) | gcloud storage, Artifact Registry |
-| Data | [data.md](data.md) | Cloud SQL, BigQuery (bq), Pub/Sub |
-| Automation & CI/CD | [automation.md](automation.md) | Scripting, output formats, filtering, GitHub Actions, operations |
+| Auth & Config | [auth.md](ref/auth.md) | Login, ADC, impersonation, config profiles |
+| IAM & Projects | [iam.md](ref/iam.md) | Projects, APIs, service accounts, Secret Manager |
+| Compute & Networking | [compute.md](ref/compute.md) | VMs, SSH, firewall, VPC, DNS, static IPs |
+| Serverless | [serverless.md](ref/serverless.md) | Cloud Run, Functions, App Engine, Scheduler, Tasks |
+| Storage & Artifacts | [storage.md](ref/storage.md) | gcloud storage, Artifact Registry |
+| Data | [data.md](ref/data.md) | Cloud SQL, BigQuery (bq), Pub/Sub |
+| Automation & CI/CD | [automation.md](ref/automation.md) | Scripting, output formats, filtering, GitHub Actions, operations |
 
 **Read the per-service file for full command reference.**
 
